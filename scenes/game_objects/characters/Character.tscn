@@ -1,0 +1,270 @@
+[gd_scene load_steps=44 format=2]
+
+[ext_resource path="res://scripts/miscs/state_machine/state_machine.gd" type="Script" id=1]
+[ext_resource path="res://scenes/game_objects/characters/Character.gd" type="Script" id=2]
+[ext_resource path="res://scenes/game_objects/characters/locomotion_state/Idle.gd" type="Script" id=3]
+[ext_resource path="res://scenes/game_objects/characters/locomotion_state/Run.gd" type="Script" id=4]
+[ext_resource path="res://scenes/game_objects/characters/locomotion_state/Locomotion.gd" type="Script" id=5]
+[ext_resource path="res://scenes/game_objects/characters/Skin.gd" type="Script" id=6]
+[ext_resource path="res://scenes/game_objects/characters/control_state/Control.gd" type="Script" id=7]
+[ext_resource path="res://scenes/game_objects/characters/control_state/None.gd" type="Script" id=8]
+[ext_resource path="res://scenes/game_objects/characters/control_state/Player.gd" type="Script" id=9]
+[ext_resource path="res://scenes/game_objects/characters/DetectionArea.gd" type="Script" id=10]
+[ext_resource path="res://scenes/game_objects/characters/CombatStat.gd" type="Script" id=11]
+[ext_resource path="res://scenes/game_objects/characters/locomotion_state/Dead.gd" type="Script" id=12]
+[ext_resource path="res://scenes/game_objects/characters/control_state/AI.gd" type="Script" id=13]
+[ext_resource path="res://addons/astar/goap/goap_planner.gd" type="Script" id=14]
+[ext_resource path="res://addons/astar/goap/goap_action.gd" type="Script" id=15]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/Patrol.gd" type="Script" id=16]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/patrol.tres" type="Resource" id=17]
+[ext_resource path="res://scenes/game_objects/characters/goap_state/MoveTo.gd" type="Script" id=18]
+[ext_resource path="res://scenes/game_objects/characters/goap_state/Idle.gd" type="Script" id=19]
+[ext_resource path="res://scenes/game_objects/characters/goap_state/Action.gd" type="Script" id=20]
+[ext_resource path="res://scenes/game_objects/characters/goap_state/Goap.gd" type="Script" id=21]
+[ext_resource path="res://scenes/game_objects/characters/goap_state/Disable.gd" type="Script" id=22]
+[ext_resource path="res://scenes/game_objects/characters/goap_state/GoapStateMachine.gd" type="Script" id=23]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/TakeCover.gd" type="Script" id=24]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/attack.tres" type="Resource" id=25]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/attack_cover.tres" type="Resource" id=26]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/range_ennemy.tres" type="Resource" id=27]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/take_cover.tres" type="Resource" id=28]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/RangeEnnemy.gd" type="Script" id=29]
+[ext_resource path="res://scenes/game_objects/characters/goap_actions/Attack.gd" type="Script" id=30]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.210041
+height = 0.501639
+
+[sub_resource type="CapsuleMesh" id=2]
+radius = 0.2
+mid_height = 0.5
+
+[sub_resource type="VisualShaderNodeColorUniform" id=3]
+uniform_name = "Color"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=4]
+constant = 0.8
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=5]
+constant = 0.5
+
+[sub_resource type="VisualShader" id=6]
+code = "shader_type spatial;
+uniform vec4 Color : hint_color;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// ColorUniform:2
+	vec3 n_out2p0 = Color.rgb;
+	float n_out2p1 = Color.a;
+
+// Scalar:4
+	float n_out4p0 = 0.800000;
+
+// Scalar:5
+	float n_out5p0 = 0.500000;
+
+// Output:0
+	ALBEDO = n_out2p0;
+	ROUGHNESS = n_out4p0;
+	SPECULAR = n_out5p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -76, -6 )
+nodes/fragment/0/position = Vector2( 640, 100 )
+nodes/fragment/2/node = SubResource( 3 )
+nodes/fragment/2/position = Vector2( 20, 120 )
+nodes/fragment/4/node = SubResource( 4 )
+nodes/fragment/4/position = Vector2( 300, 180 )
+nodes/fragment/5/node = SubResource( 5 )
+nodes/fragment/5/position = Vector2( 300, 280 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 4, 0, 0, 3, 5, 0, 0, 4 )
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+shader_param/Color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="CubeMesh" id=8]
+size = Vector3( 0.2, 0.2, 0.2 )
+
+[sub_resource type="Animation" id=9]
+resource_name = "death"
+tracks/0/type = "transform"
+tracks/0/path = NodePath("MeshInstance")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = PoolRealArray( 0, 1, 0, 0.481626, 0, -0.715053, 0, 0, 0.699071, 1, 1, 1, 0.1, 1, 0, 0.228769, 0.163737, -0.283388, 0, 0, 0.959005, 1, 1, 1, 0.5, 1, 0, 0.122394, 0.165834, -0.00985234, 0, 0, 0.999952, 1, 1, 1 )
+
+[sub_resource type="Animation" id=10]
+resource_name = "idle"
+loop = true
+tracks/0/type = "transform"
+tracks/0/path = NodePath("MeshInstance")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = PoolRealArray( 0, 1, 0, 0.481626, 0, -0.715053, 0, 0, 0.699071, 1, 1, 1 )
+
+[sub_resource type="Animation" id=11]
+resource_name = "run"
+loop = true
+tracks/0/type = "transform"
+tracks/0/path = NodePath("MeshInstance")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = PoolRealArray( 0, 1, 0, 0.481626, 0, -0.715053, 0, 0, 0.699071, 1, 1, 1, 0.3, 1, 0, 0.563847, -0.0018587, -0.715053, 0, 0, 0.699071, 1, 1, 1, 0.6, 1, 0, 0.481626, 0, -0.715053, 0, 0, 0.699071, 1, 1, 1, 0.8, 1, 0, 0.421445, 0.00136048, -0.715053, 0, 0, 0.699071, 1, 1, 1 )
+
+[sub_resource type="CylinderShape" id=12]
+radius = 7.69911
+
+[sub_resource type="CapsuleShape" id=13]
+radius = 0.33321
+height = 0.455139
+
+[node name="Character" type="KinematicBody" groups=[
+"character",
+]]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -0.0367135, 0.999326, 0, -0.999326, -0.0367135, 0, 0.477904, 0 )
+shape = SubResource( 1 )
+
+[node name="Skin" type="Spatial" parent="."]
+script = ExtResource( 6 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Skin"]
+transform = Transform( 1, 0, 0, 0, -0.0226004, 0.999745, 0, -0.999745, -0.0226004, 0, 0.481626, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="Skin"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.621951, -0.621519 )
+mesh = SubResource( 8 )
+material/0 = null
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Skin"]
+anims/death = SubResource( 9 )
+anims/idle = SubResource( 10 )
+anims/run = SubResource( 11 )
+
+[node name="DetectionArea" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 10 )
+
+[node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
+shape = SubResource( 12 )
+
+[node name="SelectBox" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="SelectBox"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.491513, -2.14847e-08 )
+shape = SubResource( 13 )
+
+[node name="Overlay" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26457, 0 )
+
+[node name="ControlSM" type="Node" parent="."]
+script = ExtResource( 1 )
+initial_state = NodePath("Control/None")
+
+[node name="Control" type="Node" parent="ControlSM"]
+script = ExtResource( 7 )
+
+[node name="None" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 8 )
+
+[node name="Player" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 9 )
+
+[node name="AI" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 13 )
+
+[node name="GoapPlanner" type="Node" parent="ControlSM/Control/AI"]
+script = ExtResource( 14 )
+goap_state_machine_path = NodePath("../GoapSM")
+
+[node name="TakeCover" type="Node" parent="ControlSM/Control/AI/GoapPlanner"]
+script = ExtResource( 24 )
+action_resource = ExtResource( 28 )
+
+[node name="Attack" type="Node" parent="ControlSM/Control/AI/GoapPlanner"]
+script = ExtResource( 30 )
+action_resource = ExtResource( 25 )
+
+[node name="AttackCover" type="Node" parent="ControlSM/Control/AI/GoapPlanner"]
+script = ExtResource( 15 )
+action_resource = ExtResource( 26 )
+
+[node name="Patrol" type="Node" parent="ControlSM/Control/AI/GoapPlanner"]
+script = ExtResource( 16 )
+action_resource = ExtResource( 17 )
+
+[node name="RangeEnnemy" type="Node" parent="ControlSM/Control/AI/GoapPlanner"]
+script = ExtResource( 29 )
+action_resource = ExtResource( 27 )
+
+[node name="GoapSM" type="Node" parent="ControlSM/Control/AI"]
+script = ExtResource( 23 )
+initial_state = NodePath("Goap/Disable")
+enabled = false
+goap_planner_path = NodePath("../GoapPlanner")
+
+[node name="Goap" type="Node" parent="ControlSM/Control/AI/GoapSM"]
+script = ExtResource( 21 )
+
+[node name="Disable" type="Node" parent="ControlSM/Control/AI/GoapSM/Goap"]
+script = ExtResource( 22 )
+
+[node name="Idle" type="Node" parent="ControlSM/Control/AI/GoapSM/Goap"]
+script = ExtResource( 19 )
+
+[node name="MoveTo" type="Node" parent="ControlSM/Control/AI/GoapSM/Goap"]
+script = ExtResource( 18 )
+
+[node name="Action" type="Node" parent="ControlSM/Control/AI/GoapSM/Goap"]
+script = ExtResource( 20 )
+
+[node name="LocomotionSM" type="Node" parent="."]
+script = ExtResource( 1 )
+initial_state = NodePath("Locomotion/Idle")
+
+[node name="Locomotion" type="Node" parent="LocomotionSM"]
+script = ExtResource( 5 )
+
+[node name="Idle" type="Node" parent="LocomotionSM/Locomotion"]
+script = ExtResource( 3 )
+
+[node name="Run" type="Node" parent="LocomotionSM/Locomotion"]
+script = ExtResource( 4 )
+
+[node name="Dead" type="Node" parent="LocomotionSM/Locomotion"]
+script = ExtResource( 12 )
+
+[node name="CombatStats" type="Node" parent="."]
+script = ExtResource( 11 )
+[connection signal="body_entered" from="DetectionArea" to="DetectionArea" method="_on_DetectionArea_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="DetectionArea" method="_on_DetectionArea_body_exited"]
+[connection signal="input_event" from="SelectBox" to="." method="_on_SelectBox_input_event"]
+[connection signal="moved" from="ControlSM/Control" to="." method="_on_Control_moved"]
+[connection signal="health_depleted" from="CombatStats" to="." method="_on_CombatStat_health_depleted"]

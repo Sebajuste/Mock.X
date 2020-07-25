@@ -1,0 +1,195 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Spatial",
+"class": "AMap",
+"language": "GDScript",
+"path": "res://scripts/miscs/AMap.gd"
+}, {
+"base": "Object",
+"class": "AStarEdge",
+"language": "GDScript",
+"path": "res://addons/astar/astar_edge.gd"
+}, {
+"base": "AStarGrid",
+"class": "AStarGoapGrid",
+"language": "GDScript",
+"path": "res://addons/astar/goap/astar/grid_goap.gd"
+}, {
+"base": "AStarGridNode",
+"class": "AStarGoapGridNode",
+"language": "GDScript",
+"path": "res://addons/astar/goap/astar/grid_node_goap.gd"
+}, {
+"base": "Object",
+"class": "AStarGrid",
+"language": "GDScript",
+"path": "res://addons/astar/astar_grid.gd"
+}, {
+"base": "Object",
+"class": "AStarGridNode",
+"language": "GDScript",
+"path": "res://addons/astar/astar_grid_node.gd"
+}, {
+"base": "Object",
+"class": "AStarPathNode",
+"language": "GDScript",
+"path": "res://addons/astar/astar_path_node.gd"
+}, {
+"base": "AStarGridNode",
+"class": "AStarVector2GridNode",
+"language": "GDScript",
+"path": "res://addons/astar/vector2/grid_node_vector2.gd"
+}, {
+"base": "Object",
+"class": "Boid2D",
+"language": "GDScript",
+"path": "res://scripts/miscs/boids/boid2D.gd"
+}, {
+"base": "Object",
+"class": "Boid3D",
+"language": "GDScript",
+"path": "res://scripts/miscs/boids/boid3D.gd"
+}, {
+"base": "Resource",
+"class": "BoidConfig",
+"language": "GDScript",
+"path": "res://scripts/miscs/boids/boid_config.gd"
+}, {
+"base": "KinematicBody",
+"class": "Character",
+"language": "GDScript",
+"path": "res://scenes/game_objects/characters/Character.gd"
+}, {
+"base": "GoapAction",
+"class": "CharacterGoapAction",
+"language": "GDScript",
+"path": "res://scenes/game_objects/characters/goap_actions/character_goap_action.gd"
+}, {
+"base": "State",
+"class": "CharacterState",
+"language": "GDScript",
+"path": "res://scenes/game_objects/characters/player_state.gd"
+}, {
+"base": "Node",
+"class": "GoapAction",
+"language": "GDScript",
+"path": "res://addons/astar/goap/goap_action.gd"
+}, {
+"base": "Resource",
+"class": "GoapActionResource",
+"language": "GDScript",
+"path": "res://addons/astar/goap/goap_action_resource.gd"
+}, {
+"base": "Node",
+"class": "GoapPlanner",
+"language": "GDScript",
+"path": "res://addons/astar/goap/goap_planner.gd"
+}, {
+"base": "StateMachine",
+"class": "GoapStateMachine",
+"language": "GDScript",
+"path": "res://scenes/game_objects/characters/goap_state/GoapStateMachine.gd"
+}, {
+"base": "Node",
+"class": "Level",
+"language": "GDScript",
+"path": "res://scripts/miscs/level/level.gd"
+}, {
+"base": "Spatial",
+"class": "Shake",
+"language": "GDScript",
+"path": "res://scripts/miscs/shake.gd"
+}, {
+"base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://scripts/miscs/state_machine/state.gd"
+}, {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://scripts/miscs/state_machine/state_machine.gd"
+}, {
+"base": "Reference",
+"class": "Steering3D",
+"language": "GDScript",
+"path": "res://scripts/miscs/steering3d.gd"
+}, {
+"base": "Node",
+"class": "TeamManager",
+"language": "GDScript",
+"path": "res://scenes/miscs/team_manager/TeamManager.gd"
+}, {
+"base": "State",
+"class": "TeamManagerState",
+"language": "GDScript",
+"path": "res://scenes/miscs/team_manager/team_manager_state.gd"
+} ]
+_global_script_class_icons={
+"AMap": "",
+"AStarEdge": "",
+"AStarGoapGrid": "",
+"AStarGoapGridNode": "",
+"AStarGrid": "",
+"AStarGridNode": "",
+"AStarPathNode": "",
+"AStarVector2GridNode": "",
+"Boid2D": "",
+"Boid3D": "",
+"BoidConfig": "",
+"Character": "",
+"CharacterGoapAction": "",
+"CharacterState": "",
+"GoapAction": "",
+"GoapActionResource": "",
+"GoapPlanner": "",
+"GoapStateMachine": "",
+"Level": "",
+"Shake": "",
+"State": "",
+"StateMachine": "",
+"Steering3D": "",
+"TeamManager": "",
+"TeamManagerState": ""
+}
+
+[application]
+
+config/name="Jam 26"
+run/main_scene="res://scenes/levels/test01/Test01.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+NavigationManager="*res://scripts/singletons/navigation_manager.gd"
+Loading="*res://scripts/singletons/loading.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "astar" )
+
+[input]
+
+select={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+unselect={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

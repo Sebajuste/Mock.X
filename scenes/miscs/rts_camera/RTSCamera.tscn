@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/miscs/rts_camera/RTSCamera.gd" type="Script" id=1]
+[ext_resource path="res://scenes/miscs/rts_camera/Tilt.gd" type="Script" id=2]
+[ext_resource path="res://scenes/miscs/rts_camera/Camera.gd" type="Script" id=3]
+
+[node name="RTSCamera" type="Spatial"]
+script = ExtResource( 1 )
+MAX_SPEED = 25
+
+[node name="Tilt" type="Spatial" parent="."]
+script = ExtResource( 2 )
+MAX_ANG_SPEED = 100
+MOUSE_SENSITIVITY = 0.001
+
+[node name="Camera" type="Camera" parent="Tilt"]
+script = ExtResource( 3 )
