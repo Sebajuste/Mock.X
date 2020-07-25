@@ -165,7 +165,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Jam 26"
-run/main_scene="res://scenes/levels/test01/Test01.tscn"
+run/main_scene="res://scenes/games/entrypoint/MainScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
