@@ -15,7 +15,6 @@ func execute(actor) -> bool:
 	var ennemy = actor.get_nearest_ennemy()
 	
 	if ennemy:
-		actor.attack(ennemy)
-		return true
+		return actor.attack(ennemy)
 	
 	return false

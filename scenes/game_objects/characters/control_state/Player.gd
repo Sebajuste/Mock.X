@@ -34,11 +34,11 @@ func unhandled_input(event: InputEvent):
 			
 			var start_position = NavigationManager.get_closest_point( character.global_transform.origin )
 			var end_position = NavigationManager.get_closest_point(look_position)
-			var path = NavigationManager.get_simple_path(start_position, end_position)
 			
-			#path.remove(0) # remove the current position
-			
-			parent.path = path
+			if end_position.distance_to(character.global_transform.origin) > 1.0:
+				var path = NavigationManager.get_simple_path(start_position, end_position)
+				#path.remove(0) # remove the current position
+				parent.path = path
 			
 	
 	pass

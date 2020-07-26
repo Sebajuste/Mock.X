@@ -7,7 +7,7 @@ const GRAVITY := 0
 export var max_speed : float = 3.0
 export var force := 2.5
 export var slowing_radius := 1.5
-export var mass := 10.0
+export var mass := 1.0
 
 var velocity := Vector3.ZERO
 
@@ -29,13 +29,11 @@ func physics_process(delta):
 	
 	var move_target = control.get_move_target()
 	
-	velocity = Steering3D.follow_with_force(
+	velocity = Steering3D.follow(
 		velocity,
 		character.global_transform.origin,
 		move_target,
 		max_speed,
-		force,
-		slowing_radius,
 		mass
 	)
 	

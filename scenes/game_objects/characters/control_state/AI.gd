@@ -32,8 +32,8 @@ func _ready():
 #	pass
 
 
-#func physics_process(delta):
-#	pass
+func physics_process(delta):
+	parent.physics_process(delta)
 
 
 func enter(_message : Dictionary = {}):

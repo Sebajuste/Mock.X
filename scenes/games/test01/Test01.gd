@@ -9,6 +9,8 @@ func _ready():
 	
 	NavigationManager.set_navigation( $AMap )
 	
+	seed( OS.get_datetime().second ) 
+	
 	pass # Replace with function body.
 
 
@@ -78,9 +80,12 @@ func _on_PlayerTeamManager_selected(character):
 	$CanvasLayer/SquadMember.visible = true
 	$CanvasLayer/Actions.visible = true
 	$CanvasLayer/Combat.visible = false
+	
+	$CameraRTS.target = character
 
 
 func _on_EnnemyTeamManager_selected(character):
 	
 	$CanvasLayer/Combat/Attack.set_target(character)
 	
+	#$CameraRTS.target = character

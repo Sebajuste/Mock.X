@@ -15,14 +15,19 @@ func execute(actor) -> bool:
 	
 	var ai = actor.control_state.state
 	
+	
+	if ennemy == null:
+		return false
+	
 	# TODO : move random direction
 	
 	#var position = actor.global_transform.origin + Vector3(randf() * 8, 0.0, randf() * 8).normalized()
 	
-	move_to_position( ennemy.global_transform.origin, 8 )
+	
+	move_to_target( ennemy, 6 )
 	
 	if not yield(goap_planner.goap_state_machine, "on_move_reached"):
-		print("Cannot end TakeBox action")
+		print("Cannot end RangeEnnemy action")
 		emit_signal("on_action_end", false)
 		return
 	

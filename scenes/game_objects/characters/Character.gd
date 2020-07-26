@@ -48,18 +48,18 @@ func can_see(target : Spatial) -> bool:
 	
 	var space_state := get_world().direct_space_state
 	
-	print("shooter ", self.global_transform.origin)
-	print("target ", target.global_transform.origin)
+	var from := self.global_transform.origin
+	from.y = 0.5
+	var to:= target.global_transform.origin
+	to.y = 0.5
 	
 	var result := space_state.intersect_ray(
-		self.global_transform.origin,
-		target.global_transform.origin,
-		[self]
+		from,
+		to,
+		[self, target]
 	)
 	
-	print(result)
-	
-	return false
+	return not result.has("collider")
 
 
 func move_to(position : Vector3):
@@ -86,10 +86,18 @@ func reset_action_points():
 	
 
 
-func attack(target : Character):
+func attack(target : Character) -> bool:
+	
+	var can_see_target := can_see(target)
 	
 	if action_points < 4:
-		return
+		print("not enought action point to attack")
+	
+	if not can_see_target:
+		print("dont see target to attack")
+	
+	if action_points < 4 or (not can_see_target):
+		return false
 	
 	var distance_squared := global_transform.origin.distance_squared_to(target.global_transform.origin)
 	var hit_chance = max(0, 100 - distance_squared)
@@ -118,7 +126,7 @@ func attack(target : Character):
 	print("hit : ", hit)
 	print("damage : ", damage)
 	
-	pass
+	return true
 
 
 func get_nearest_ennemy() -> Character:
@@ -128,7 +136,7 @@ func get_nearest_ennemy() -> Character:
 	
 	for ennemy in detection.ennemies:
 		var distance = ennemy.global_transform.origin.distance_to(global_transform.origin)
-		if min_distance == null or distance < min_distance:
+		if not ennemy.dead and (min_distance == null or distance < min_distance):
 			min_distance = distance
 			nearest_ennemy = ennemy
 	

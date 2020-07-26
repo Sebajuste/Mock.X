@@ -8,12 +8,12 @@ func _ready():
 
 func execute(actor) -> bool:
 	
-	var position = actor.global_transform.origin + Vector3(randf(), 0.0, randf() ).normalized() * 8
+	var position = actor.global_transform.origin + Vector3(randf(), 0.0, randf() ).normalized() * 4
 	
 	move_to_position( position )
 	
 	if not yield(goap_planner.goap_state_machine, "on_move_reached"):
-		print("Cannot end TakeBox action")
+		print("Cannot end Patrol action")
 		emit_signal("on_action_end", false)
 		return
 	

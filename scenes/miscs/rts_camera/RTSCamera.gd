@@ -30,7 +30,7 @@ func _input(event):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	elif event is InputEventMouseButton:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		
+	
 	
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		self.rotate_y(event.relative.x * MOUSE_SENSITIVITY)
@@ -41,7 +41,7 @@ func _process(delta):
 	
 	if (crsr.x < int(pos.x*area_percent)) or Input.is_key_pressed(KEY_A):
 		
-		dir = Vector3(0,0,0)
+		dir = Vector3.ZERO
 		dir.x -= 1
 		speed += acc * delta
 		speed = clamp(speed,0,MAX_SPEED)

@@ -9,6 +9,8 @@ var path := PoolVector3Array() setget set_path
 var moving := false
 var move_canceled := false
 
+var next_move_position : Vector3
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,21 +23,31 @@ func _ready():
 
 
 func physics_process(delta):
-	if not path.empty():
-		var next_position = path[0]
-		if next_position.distance_to(character.global_transform.origin) <= 0.5:
+	
+	if path.size() > 1:
+		
+		if not moving:
+			next_move_position = next_position()
 			moving = true
-			emit_signal("moved")
-			path.remove(0)
-	elif moving:
+			return
+	
+	if moving and character.global_transform.origin.distance_squared_to(next_move_position) < 0.1:
+		
 		moving = false
-		emit_signal("destination_reached", not move_canceled)
+		emit_signal("moved")
+		character.global_transform.origin = next_move_position
+		
+		if path.size() <= 1:
+			emit_signal("destination_reached", not move_canceled)
+		else:
+			next_move_position = next_position()
+			moving = true
 
 
 func get_move_target() -> Vector3:
-	if not path.empty():
-		return path[0]
-	return character.global_transform.origin
+	
+	return next_move_position if moving else character.global_transform.origin
+	
 
 
 func get_look_position() -> Vector3:
@@ -44,8 +56,21 @@ func get_look_position() -> Vector3:
 	
 
 
-func set_path(value):
-	path = value
-	if value == null:
-		move_canceled = true
+func next_position() -> Vector3:
+	var position = path[0]
+	position.y = 0
+	path.remove(0)
+	return position
 
+
+func set_path(value):
+	
+	if value == null:
+		path = PoolVector3Array()
+		if moving:
+			moving = false
+			move_canceled = true
+			emit_signal("destination_reached", false)
+	else:
+		path = value
+		path.remove(0)

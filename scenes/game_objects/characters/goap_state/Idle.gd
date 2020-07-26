@@ -40,10 +40,12 @@ func enter(message : Dictionary = {}):
 		var nearest_ennemy = character.get_nearest_ennemy()
 		if nearest_ennemy:
 			var distance = nearest_ennemy.global_transform.origin.distance_to(character.global_transform.origin)
-			if distance < 8:
+			if distance < 8 and character.can_see(nearest_ennemy):
 				range_ennemy = true
 		
-		state_machine.goap_planner.world_state["see_ennemy"] = not character.detection.ennemies.empty()
+		var ennemy_detected : bool = not character.detection.ennemies.empty()
+		
+		state_machine.goap_planner.world_state["see_ennemy"] = ennemy_detected
 		state_machine.goap_planner.world_state["range_ennemy"] = range_ennemy
 		state_machine.goap_planner.world_state["cover"] = false
 		

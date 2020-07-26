@@ -76,6 +76,7 @@ func _on_PlayerTeamManager_selected(character):
 	$CanvasLayer/SquadMember.visible = true
 	$CanvasLayer/Actions.visible = true
 	$CanvasLayer/Combat.visible = false
+	$Level/CameraRTS.target = character
 
 
 func _on_EnnemyTeamManager_selected(character):

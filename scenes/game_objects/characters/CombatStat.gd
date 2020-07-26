@@ -2,7 +2,7 @@ extends Node
 
 
 signal damage_taken(damage)
-signal healt_changed(old, current, max_points)
+signal health_changed(old, current, max_points)
 signal health_depleted()
 
 
@@ -52,6 +52,6 @@ puppet func set_health(value: int):
 	health = value
 	emit_signal("damage_taken", old_health - health)
 	health = clamp(health, 0, max_health)
-	emit_signal("health_changed", health, old_health)
+	emit_signal("health_changed", old_health, health, max_health)
 	if health == 0:
 		emit_signal("health_depleted")

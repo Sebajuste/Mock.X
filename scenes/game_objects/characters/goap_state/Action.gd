@@ -54,4 +54,4 @@ func enter(message : Dictionary = {}):
 func exit():
 	
 	print("Action end")
-	
+	pass

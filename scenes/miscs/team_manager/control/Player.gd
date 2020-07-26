@@ -30,6 +30,7 @@ func process(delta):
 		for pos in path:
 			if action_points == 0:
 				break
+			pos.y = 0.1
 			$ImmediateGeometry.add_vertex(pos)
 			action_points -= 1
 		
@@ -42,9 +43,6 @@ func unhandled_input(event):
 		parent.character_selected.control = "None"
 		parent.character_selected = null
 		
-		#$CanvasLayer/Actions.visible = false
-		#$CanvasLayer/SquadMember.visible = false
-		#$CanvasLayer/Combat.visible = false
 		$ImmediateGeometry.clear()
 
 
@@ -58,7 +56,7 @@ func enter(msg : Dictionary = {}):
 			character.detection.connect("ennemy_detected", self, "_on_ennemy_detected")
 			character.connect("selected", self, "_on_character_selected")
 		else:
-			#character.visible = false
+			character.visible = false
 			pass
 	owner.emit_signal("squad_updated")
 
